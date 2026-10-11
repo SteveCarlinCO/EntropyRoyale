@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1000-Dot Entropy Royale: Final Two — Entropy Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --hatch-widget-bg: #14161a;
@@ -20,7 +23,7 @@
     margin: 0;
     background: var(--hatch-widget-bg);
     color: var(--hatch-widget-text);
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-family: 'Orbitron', system-ui, -apple-system, "Segoe UI", sans-serif;
     display: flex;
     justify-content: center;
     padding: 24px 12px;
@@ -238,8 +241,12 @@
 <div class="wrap">
 <div style="box-sizing:border-box;max-width:100%;padding:12px;">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
-    <div style="font-weight:700;letter-spacing:.25em;font-size:13px;color:var(--hatch-widget-text);">1000-DOT ENTROPY ROYALE: FINAL TWO</div>
-    <button id="reset" style="background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border:1px solid var(--hatch-widget-border);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;">Reset</button>
+    <div id="simTitle" style="font-weight:700;letter-spacing:.25em;font-size:13px;color:var(--hatch-widget-text);">1000-DOT ENTROPY ROYALE: FINAL TWO</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <label for="dotsInput" style="font-size:12px;color:var(--hatch-widget-text);white-space:nowrap;">Dots:</label>
+      <input id="dotsInput" type="number" min="2" max="1000" value="1000" style="width:76px;background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border:1px solid var(--hatch-widget-border);border-radius:8px;padding:6px 8px;font-size:12px;">
+      <button id="reset10" style="background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border:1px solid var(--hatch-widget-border);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;">Reset</button>
+    </div>
   </div>
   <br>
   <div class="canvas-holder">
@@ -260,7 +267,7 @@
   </div>
 <br>
   <div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;">
-    <label for="guessInput10" style="font-size:12px;color:var(--hatch-widget-text);white-space:nowrap;">Your pick (1&ndash;1000):</label>
+    <label id="guessLabel" for="guessInput10" style="font-size:12px;color:var(--hatch-widget-text);white-space:nowrap;">Your pick (1&ndash;1000):</label>
     <input id="guessInput10" type="number" min="1" max="1000" placeholder="e.g. 437" style="width:90px;background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border:1px solid var(--hatch-widget-border);border-radius:8px;padding:6px 8px;font-size:12px;">
     <button id="guessBtn10" style="background:var(--hatch-widget-accent);color:var(--hatch-widget-on-accent);border:1px solid var(--hatch-widget-accent);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;font-weight:600;">Lock in guess &amp; start</button>
   </div>
@@ -283,6 +290,9 @@
   var statusEl = document.getElementById('status10');
   var guessInput = document.getElementById('guessInput10');
   var guessBtn = document.getElementById('guessBtn10');
+  var dotsInput = document.getElementById('dotsInput');
+  var simTitle = document.getElementById('simTitle');
+  var guessLabel = document.getElementById('guessLabel');
   var H = 260, W = 300, START = 1000, CELL = 14, FINAL = 2;
   var parts = [], debris = [], rings = [];
   var PALETTE = ['#4aa3ff','#ff6b4a','#ffd24a','#7de08a','#c58aff','#4adfd8'];
@@ -302,6 +312,14 @@
     started = false; guess = null;
     verdictShown = false; guessingClosed = false;
     guessAlive = false; guessDeadAt = 0;
+    var want = parseInt(dotsInput.value, 10);
+    if (isNaN(want)) want = 1000;
+    START = Math.max(2, Math.min(1000, want));
+    dotsInput.value = START;
+    guessInput.max = START;
+    guessInput.placeholder = 'e.g. ' + Math.min(437, START);
+    simTitle.textContent = START + '-DOT ENTROPY ROYALE: FINAL TWO';
+    guessLabel.innerHTML = 'Your pick (1&ndash;' + START + '):';
     var cols = Math.floor(W / 11), rows = Math.floor(H / 11);
     var cells = [];
     for (var cy = 0; cy < rows; cy++)
@@ -378,7 +396,7 @@
       statusEl.textContent = 'Your pick #' + guess + ' was vaporized with ' + guessDeadAt + ' dots still standing.';
       return;
     }
-    statusEl.textContent = 'Your pick: #' + guess + ' — still alive.' + (guessingClosed ? ' (guessing closed)' : ' (you can change it until 10 remain)');
+    statusEl.textContent = 'Your pick: #' + guess + ' — still alive.' + (guessingClosed ? ' (guessing closed)' : ' (you can change it until ' + Math.max(FINAL + 1, Math.min(10, Math.ceil(START * 0.25))) + ' remain)');
   }
   function lockGuess(){
     var val = parseInt(guessInput.value, 10);
@@ -465,18 +483,28 @@
       }
       if (di >= 0){
         var a = parts[di], b = parts[dj];
-        detonate(a.x, a.y, a.c, false);
-        detonate(b.x, b.y, b.c, false);
+        var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
         var dead = {};
-        dead[di] = true; dead[dj] = true;
-        if (parts.length <= 12) rings.push({x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, r: 4, life: 1, big: false});
+        if (parts.length === 3){
+          // odd endgame: single elimination so exactly two survive
+          var li = a.r <= b.r ? di : dj;
+          detonate(parts[li].x, parts[li].y, parts[li].c, true);
+          dead[li] = true;
+          rings.push({x: mx, y: my, r: 6, life: 1, big: true});
+        } else {
+          detonate(a.x, a.y, a.c, false);
+          detonate(b.x, b.y, b.c, false);
+          dead[di] = true; dead[dj] = true;
+          if (parts.length <= 12) rings.push({x: mx, y: my, r: 4, life: 1, big: false});
+        }
         parts = parts.filter(function(p, k){ return !dead[k]; });
         if (guess != null && guessAlive){
           guessAlive = parts.some(function(p){ return p.num === guess; });
           if (!guessAlive){ guessDeadAt = parts.length; updateStatus(); }
         }
       }
-      if (!guessingClosed && parts.length <= 10 && parts.length > FINAL){
+      var closeAt = Math.max(FINAL + 1, Math.min(10, Math.ceil(START * 0.25)));
+      if (!guessingClosed && parts.length <= closeAt && parts.length > FINAL){
         guessingClosed = true;
         guessInput.disabled = true;
         guessBtn.disabled = true;
@@ -536,7 +564,7 @@
       ctx.arc(p.x, p.y, done ? Math.max(9, p.r) : p.r, 0, Math.PI * 2);
       ctx.fill();
       if (showNums || done){
-        ctx.font = done ? '700 10px system-ui, sans-serif' : '700 8px system-ui, sans-serif';
+        ctx.font = done ? '700 10px Orbitron, system-ui, sans-serif' : '700 8px Orbitron, system-ui, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.lineWidth = 2.5;
@@ -550,7 +578,7 @@
     if (!started){
       ctx.fillStyle = mutedColor;
       ctx.globalAlpha = 0.9;
-      ctx.font = '700 14px system-ui, sans-serif';
+      ctx.font = '700 14px Orbitron, system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('PLACE YOUR GUESS TO BEGIN', W / 2, H / 2);
@@ -560,7 +588,7 @@
       var s1 = parts[0].num, s2 = parts[1].num;
       ctx.fillStyle = textColor;
       ctx.globalAlpha = 0.9;
-      ctx.font = '700 15px system-ui, sans-serif';
+      ctx.font = '700 15px Orbitron, system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText('DOTS #' + s1 + ' AND #' + s2 + ' SURVIVE', W / 2, 30);
@@ -585,7 +613,7 @@
   guessInput.addEventListener('keydown', function(e){
     if (e.key === 'Enter') lockGuess();
   });
-  document.getElementById('reset').addEventListener('click', reset);
+  document.getElementById('reset10').addEventListener('click', reset);
   resize();
   reset();
   if (window.ResizeObserver){ new ResizeObserver(function(){ resize(); }).observe(cv); }
