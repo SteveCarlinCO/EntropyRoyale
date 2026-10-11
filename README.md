@@ -52,7 +52,8 @@ No build step, no dependencies (one Google Font is fetched for the UI).
 
 | File | What it is |
 | --- | --- |
-| `1000-dot-entropy-royale-final-two.html` | The simulation (this readme describes it) |
+| [the simulation](./1000-dot-entropy-royale-final-two.html)
+ | The simulation (this readme describes it) |
 
 ## Tweaking it
 
