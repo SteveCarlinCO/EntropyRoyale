@@ -1,0 +1,227 @@
+:root {
+    --hatch-widget-bg: #14161a;
+    --hatch-widget-surface: #1e2126;
+    --hatch-widget-surface-muted: #191c20;
+    --hatch-widget-text: #e8eaed;
+    --hatch-widget-muted: #9aa0a6;
+    --hatch-widget-border: #3c4043;
+    --hatch-widget-accent: #e08a3c;
+    --hatch-widget-on-accent: #14161a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--hatch-widget-bg);
+    color: var(--hatch-widget-text);
+    font-family: 'Orbitron', system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 24px 12px;
+  }
+  
+  .wrap { width: 100%; max-width: 760px; }
+  .portal-canvas {
+    width: 100%;
+    height: 260px;
+    display: block;
+    border-radius: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.95);
+    background:
+      radial-gradient(circle 1.5px at 12% 22%, rgba(255, 255, 255, 0.9), transparent 70%),
+      radial-gradient(circle 1px at 28% 68%, rgba(255, 255, 255, 0.7), transparent 70%),
+      radial-gradient(circle 2px at 45% 15%, rgba(200, 220, 255, 0.8), transparent 70%),
+      radial-gradient(circle 1px at 58% 82%, rgba(255, 255, 255, 0.6), transparent 70%),
+      radial-gradient(circle 1.5px at 72% 38%, rgba(255, 255, 255, 0.85), transparent 70%),
+      radial-gradient(circle 1px at 85% 62%, rgba(200, 220, 255, 0.7), transparent 70%),
+      radial-gradient(circle 2px at 92% 18%, rgba(255, 255, 255, 0.75), transparent 70%),
+      radial-gradient(circle 1px at 35% 45%, rgba(255, 255, 255, 0.5), transparent 70%),
+      radial-gradient(circle 1.5px at 64% 12%, rgba(255, 255, 255, 0.65), transparent 70%),
+      radial-gradient(circle 1px at 8% 78%, rgba(200, 220, 255, 0.6), transparent 70%),
+      radial-gradient(circle 1px at 50% 55%, rgba(255, 255, 255, 0.55), transparent 70%),
+      radial-gradient(circle 1.5px at 22% 88%, rgba(255, 255, 255, 0.7), transparent 70%),
+      radial-gradient(ellipse 340px 150px at 28% 72%, rgba(112, 66, 200, 0.30), transparent 70%),
+      radial-gradient(ellipse 300px 140px at 76% 28%, rgba(38, 110, 200, 0.27), transparent 70%),
+      radial-gradient(ellipse 220px 220px at 55% 55%, rgba(20, 16, 40, 0.55), transparent 70%),
+      radial-gradient(ellipse at 50% 45%, #10131a 0%, #000 60%, #010203 100%);
+    background-repeat: no-repeat;
+    box-shadow:
+      0 0 0 8px #0a0c0f,
+      0 0 0 9px #2b3038,
+      0 0 0 15px #0a0c0f,
+      0 0 0 16px var(--hatch-widget-border),
+      0 24px 70px rgba(0, 0, 0, 0.8),
+      inset 0 3px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -6px 18px rgba(0, 0, 0, 0.95),
+      inset 0 0 95px rgba(0, 0, 0, 0.9),
+      inset 0 0 160px rgba(96, 60, 200, 0.16);
+    animation: portal-breathe 6s ease-in-out infinite alternate;
+  }
+  @keyframes portal-breathe {
+    from {
+      box-shadow:
+        0 0 0 8px #0a0c0f,
+        0 0 0 9px #2b3038,
+        0 0 0 12px #0a0c0f,
+        0 0 0 16px var(--hatch-widget-border),
+        0 24px 70px rgba(0, 0, 5, 0.8),
+        inset 0 3px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -6px 18px rgba(0, 0, 0, 0.95),
+        inset 0 0 80px rgba(0, 0, 0, 0.88),
+        inset 0 0 140px rgba(96, 60, 200, 0.10);
+    }
+    to {
+      box-shadow:
+        0 0 0 8px #0a0c0f,
+        0 0 0 14px #2b3038,
+        0 0 0 15px #0a0c0f,
+        0 0 0 16px var(--hatch-widget-border),
+        0 24px 70px rgba(0, 0, 0, 0.8),
+        inset 0 3px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -6px 18px rgba(0, 0, 0, 0.95),
+        inset 0 0 116px rgba(0, 0, 0, 0.94),
+        inset 0 0 180px rgba(96, 60, 200, 0.22);
+    }
+  }
+  /* Mini galaxy overlay, upper-right of the canvas */
+  .canvas-holder { position: relative; }
+  .canvas-holder .portal-canvas { position: relative; z-index: 1; background: transparent; }
+  .mini-galaxy {
+    position: absolute;
+    top: 10px; right: 12px;
+    width: 90px; height: 90px;
+    z-index: 0;
+    opacity: 0.8;
+    pointer-events: none;
+    perspective: 500px;
+  }
+  .mini-galaxy .tiny-galaxy {
+    position: relative;
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #04050a 0%, #000 70%);
+    transform: rotateX(75deg);
+    -webkit-mask: radial-gradient(circle, #000 52%, transparent 78%);
+    mask: radial-gradient(circle, #000 52%, transparent 78%);
+  }
+  .mini-galaxy .tg-stars {
+    position: absolute; inset: 0; border-radius: 50%;
+    background:
+      radial-gradient(circle 1px at 22% 30%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1px at 68% 22%, rgba(200,220,255,0.85), transparent 70%),
+      radial-gradient(circle 1px at 82% 58%, rgba(255,255,255,0.8), transparent 70%),
+      radial-gradient(circle 1px at 58% 80%, rgba(255,255,255,0.75), transparent 70%),
+      radial-gradient(circle 1px at 30% 72%, rgba(200,220,255,0.8), transparent 70%),
+      radial-gradient(circle 1px at 12% 52%, rgba(255,255,255,0.7), transparent 70%),
+      radial-gradient(circle 1px at 44% 44%, rgba(255,255,255,0.6), transparent 70%),
+      radial-gradient(circle 1px at 74% 44%, rgba(255,255,255,0.6), transparent 70%);
+    background-repeat: no-repeat;
+    filter: blur(1.2px);
+    animation: tg-twinkle 2.8s ease-in-out infinite alternate;
+  }
+  .mini-galaxy .tg-band {
+    position: absolute; border-radius: 50%;
+    filter: blur(10px);
+    animation: tg-spin 70s linear infinite;
+  }
+  .mini-galaxy .tg-band.b1 { inset: 34%;
+    background: conic-gradient(from 0deg,
+      transparent 0deg, rgba(160,190,255,0) 6deg, rgba(160,190,255,0.95) 18deg,
+      rgba(160,190,255,0.95) 40deg, rgba(160,190,255,0) 52deg, transparent 64deg,
+      transparent 180deg, rgba(160,190,255,0) 186deg, rgba(160,190,255,0.95) 198deg,
+      rgba(160,190,255,0.95) 220deg, rgba(160,190,255,0) 232deg, transparent 244deg);
+    -webkit-mask: radial-gradient(circle closest-side, #000 60%, transparent 78%);
+    mask: radial-gradient(circle closest-side, #000 60%, transparent 78%);
+  }
+  .mini-galaxy .tg-band.b2 { inset: 22%;
+    background: conic-gradient(from 45deg,
+      transparent 0deg, rgba(160,190,255,0) 6deg, rgba(160,190,255,0.9) 18deg,
+      rgba(170,170,255,0.9) 40deg, rgba(160,190,255,0) 52deg, transparent 64deg,
+      transparent 180deg, rgba(160,190,255,0) 186deg, rgba(160,190,255,0.9) 198deg,
+      rgba(170,170,255,0.9) 220deg, rgba(160,190,255,0) 232deg, transparent 244deg);
+    -webkit-mask: radial-gradient(circle closest-side, transparent 52%, #000 66%, #000 88%, transparent 99%);
+    mask: radial-gradient(circle closest-side, transparent 52%, #000 66%, #000 88%, transparent 99%);
+  }
+  .mini-galaxy .tg-band.b3 { inset: 8%;
+    background: conic-gradient(from 90deg,
+      transparent 0deg, rgba(150,170,255,0) 6deg, rgba(150,170,255,0.85) 18deg,
+      rgba(190,160,255,0.85) 40deg, rgba(150,170,255,0) 52deg, transparent 64deg,
+      transparent 180deg, rgba(150,170,255,0) 186deg, rgba(150,170,255,0.85) 198deg,
+      rgba(190,160,255,0.85) 220deg, rgba(150,170,255,0) 232deg, transparent 244deg);
+    -webkit-mask: radial-gradient(circle closest-side, transparent 60%, #000 72%, #000 92%, transparent 100%);
+    mask: radial-gradient(circle closest-side, transparent 60%, #000 72%, #000 92%, transparent 100%);
+  }
+  .mini-galaxy .tg-halo {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(circle, transparent 42%, rgba(120,140,255,0.14) 62%, transparent 78%);
+  }
+  .mini-galaxy .tg-core {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(255,253,244,1) 0%, rgba(255,228,180,0.75) 14%,
+      rgba(255,196,140,0.3) 30%, transparent 52%);
+    filter: blur(4px);
+    animation: tg-pulse 4s ease-in-out infinite alternate;
+  }
+  @keyframes tg-spin { to { transform: rotate(360deg); } }
+  @keyframes tg-twinkle { from { opacity: 0.6; } to { opacity: 1; } }
+  @keyframes tg-pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+  /* Twinkling starfield behind the portal — three layers, desynced */
+  .portal-stars {
+    position: absolute; inset: 0; z-index: 0;
+    pointer-events: none;
+    background-repeat: no-repeat;
+  }
+  .portal-stars.s1 {
+    background:
+      radial-gradient(circle 1px at 5% 12%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1px at 14% 68%, rgba(255,255,255,0.8), transparent 70%),
+      radial-gradient(circle 1px at 22% 34%, rgba(200,220,255,0.85), transparent 70%),
+      radial-gradient(circle 1px at 31% 82%, rgba(255,255,255,0.75), transparent 70%),
+      radial-gradient(circle 1px at 38% 18%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1px at 47% 55%, rgba(200,220,255,0.8), transparent 70%),
+      radial-gradient(circle 1px at 55% 8%, rgba(255,255,255,0.85), transparent 70%),
+      radial-gradient(circle 1px at 63% 72%, rgba(255,255,255,0.75), transparent 70%),
+      radial-gradient(circle 1px at 71% 28%, rgba(200,220,255,0.85), transparent 70%),
+      radial-gradient(circle 1px at 79% 88%, rgba(255,255,255,0.8), transparent 70%),
+      radial-gradient(circle 1px at 86% 44%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1px at 93% 15%, rgba(200,220,255,0.8), transparent 70%),
+      radial-gradient(circle 1px at 9% 90%, rgba(255,255,255,0.75), transparent 70%),
+      radial-gradient(circle 1px at 27% 52%, rgba(255,255,255,0.85), transparent 70%),
+      radial-gradient(circle 1px at 52% 38%, rgba(200,220,255,0.8), transparent 70%),
+      radial-gradient(circle 1px at 68% 92%, rgba(255,255,255,0.75), transparent 70%),
+      radial-gradient(circle 1px at 90% 70%, rgba(255,255,255,0.85), transparent 70%),
+      radial-gradient(circle 1px at 97% 36%, rgba(200,220,255,0.8), transparent 70%);
+    animation: pstar-tw 2.4s ease-in-out infinite;
+  }
+  .portal-stars.s2 {
+    background:
+      radial-gradient(circle 1.5px at 8% 42%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1.5px at 19% 78%, rgba(200,220,255,0.85), transparent 70%),
+      radial-gradient(circle 1.5px at 29% 16%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1.5px at 42% 64%, rgba(255,255,255,0.85), transparent 70%),
+      radial-gradient(circle 1.5px at 51% 28%, rgba(200,220,255,0.9), transparent 70%),
+      radial-gradient(circle 1.5px at 60% 86%, rgba(255,255,255,0.8), transparent 70%),
+      radial-gradient(circle 1.5px at 70% 8%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1.5px at 77% 52%, rgba(200,220,255,0.85), transparent 70%),
+      radial-gradient(circle 1.5px at 88% 24%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1.5px at 95% 76%, rgba(255,255,255,0.8), transparent 70%),
+      radial-gradient(circle 1.5px at 35% 48%, rgba(200,220,255,0.85), transparent 70%),
+      radial-gradient(circle 1.5px at 58% 58%, rgba(255,255,255,0.85), transparent 70%),
+      radial-gradient(circle 1.5px at 12% 8%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 1.5px at 83% 90%, rgba(200,220,255,0.8), transparent 70%);
+    animation: pstar-tw 3.7s ease-in-out -1.5s infinite;
+  }
+  .portal-stars.s3 {
+    background:
+      radial-gradient(circle 2px at 16% 28%, rgba(255,255,255,0.95), transparent 70%),
+      radial-gradient(circle 2px at 36% 72%, rgba(200,220,255,0.9), transparent 70%),
+      radial-gradient(circle 2px at 54% 16%, rgba(255,255,255,0.95), transparent 70%),
+      radial-gradient(circle 2px at 66% 60%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 2px at 81% 36%, rgba(200,220,255,0.9), transparent 70%),
+      radial-gradient(circle 2px at 92% 84%, rgba(255,255,255,0.95), transparent 70%),
+      radial-gradient(circle 2px at 6% 62%, rgba(255,255,255,0.9), transparent 70%),
+      radial-gradient(circle 2px at 48% 88%, rgba(200,220,255,0.9), transparent 70%),
+      radial-gradient(circle 2px at 73% 12%, rgba(255,255,255,0.95), transparent 70%);
+    animation: pstar-tw 5.5s ease-in-out -2.2s infinite;
+  }
+  @keyframes pstar-tw { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }

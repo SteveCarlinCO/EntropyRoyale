@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1000-Dot Entropy Royale: Final Two — Entropy Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="entropy_styles.css">
+</head>
+<body>
+<div class="wrap">
+<div style="box-sizing:border-box;max-width:100%;padding:12px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+    <div id="simTitle" style="font-weight:700;letter-spacing:.25em;font-size:13px;color:var(--hatch-widget-text);">1000-DOT ENTROPY ROYALE: FINAL TWO</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <label for="dotsInput" style="font-size:12px;color:var(--hatch-widget-text);white-space:nowrap;">Dots:</label>
+      <input id="dotsInput" type="number" min="2" max="1000" value="1000" style="width:76px;background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border:1px solid var(--hatch-widget-border);border-radius:8px;padding:6px 8px;font-size:12px;">
+      <button id="reset10" style="background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border:1px solid var(--hatch-widget-border);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;">Reset</button>
+    </div>
+  </div>
+  <br>
+  <div class="canvas-holder">
+    <div class="portal-stars s1"></div>
+    <div class="portal-stars s2"></div>
+    <div class="portal-stars s3"></div>
+    <div class="mini-galaxy">
+      <div class="tiny-galaxy">
+        <div class="tg-halo"></div>
+        <div class="tg-stars"></div>
+        <div class="tg-band b1"></div>
+        <div class="tg-band b2"></div>
+        <div class="tg-band b3"></div>
+        <div class="tg-core"></div>
+      </div>
+    </div>
+    <canvas id="cv10" class="portal-canvas"></canvas>
+  </div>
+<br>
+  <div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;">
+    <label id="guessLabel" for="guessInput10" style="font-size:12px;color:var(--hatch-widget-text);white-space:nowrap;">Your pick (1&ndash;1000):</label>
+    <input id="guessInput10" type="number" min="1" max="1000" placeholder="e.g. 437" style="width:90px;background:var(--hatch-widget-surface);color:var(--hatch-widget-text);border:1px solid var(--hatch-widget-border);border-radius:8px;padding:6px 8px;font-size:12px;">
+    <button id="guessBtn10" style="background:var(--hatch-widget-accent);color:var(--hatch-widget-on-accent);border:1px solid var(--hatch-widget-accent);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;font-weight:600;">Lock in guess &amp; start</button>
+  </div>
+  <div id="status10" style="font-size:12px;color:var(--hatch-widget-muted);margin-top:8px;min-height:18px;">The dots are frozen. Lock in your guess to start the simulation.</div>
+  <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+    <span style="font-size:11px;color:var(--hatch-widget-muted);white-space:nowrap;" id="dotsLabel10">dots: 1000</span>
+    <div style="flex:1;height:8px;border-radius:4px;background:var(--hatch-widget-surface);border:1px solid var(--hatch-widget-border);overflow:hidden;">
+      <div id="meter10" style="height:100%;width:100%;background:var(--hatch-widget-accent);"></div>
+    </div>
+    <span style="font-size:11px;color:var(--hatch-widget-muted);white-space:nowrap;">2</span>
+  </div>
+</div>
+</div>
+<script src="entropy_script.js"></script>
+</body>
+</html>
